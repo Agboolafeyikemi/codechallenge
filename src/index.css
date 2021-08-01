@@ -1,11 +1,16 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, Noto Sans, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #1a202c;
+}
+
+html {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Helvetica Neue, Arial, Noto Sans, sans-serif;
+  line-height: 1.5;
 }
 
 code {
@@ -77,4 +82,125 @@ html {
   flex: 0 1 auto;
   --bg-opacity: 1;
   background-color: #3182ce;
+}
+.layout-container {
+  margin-top: 6rem;
+}
+.layout-container .ant-menu.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub,
+.ant-menu.ant-menu-dark .ant-menu-sub,
+.ant-layout-sider-children {
+  background-color: #2d3748;
+}
+/* .layout-container .ant-menu.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub,
+.ant-menu.ant-menu-dark .ant-menu-sub {
+  background-color: #2d3748;
+} */
+
+.layout-container .ant-layout-sider {
+  min-width: 300px !important;
+  width: 300px !important;
+  margin-right: 5% !important;
+}
+.layout-container .ant-layout {
+  background-color: rgba(26, 32, 44, var(--bg-opacity));
+}
+.filters {
+  width: 77%;
+  margin: 30px auto;
+}
+.category-filter h2,
+.price-filter h2 {
+  color: white;
+  margin-top: 3rem;
+  font-size: 1.5rem;
+  margin-bottom: 3rem;
+  font-weight: bold;
+}
+.checkbox-group h2 {
+  color: white;
+  margin-top: 3rem;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+.category-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 15px auto;
+}
+
+.category-name {
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  color: #fff;
+}
+.category-name h3 {
+  color: #fff;
+  font-weight: bold;
+}
+
+.price-filter .ant-input-number {
+  width: 100%;
+  margin: 15px auto;
+  padding: 0.5rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+}
+.separator {
+  --text-opacity: 1;
+  /* color: #4a5568; */
+  color: rgba(74, 85, 104, var(--text-opacity));
+  text-align: center;
+}
+.checkbox-group .ant-row {
+  display: block;
+  /* flex-flow: row wrap;*/
+}
+.checkbox-group .ant-checkbox-wrapper {
+  display: flex;
+}
+.checkbox-group .ant-checkbox-wrapper + .ant-checkbox-wrapper {
+  margin-left: 0;
+}
+
+.checkbox-group .ant-checkbox-inner {
+  background-color: #2d3748;
+  border-radius: 2px;
+  border: 2px solid #1a202c;
+  /* width: 20px;
+  height: 20px; */
+}
+.checkbox-group .ant-checkbox-checked .ant-checkbox-inner {
+  /* background-color: #1890ff; */
+  border-color: none;
+
+  color: #fff;
+  background-color: #1a202c;
+}
+
+.checkbox-group .ant-checkbox + span {
+  font-size: 0.875rem;
+  color: #fff;
+  font-weight: 600;
+}
+.category-name:hover {
+  border-left-width: 4px;
+}
+.product-card-container {
+  margin-top: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+  display: flex;
+}
+.product-card {
+  padding: 1rem;
+  margin-right: 2rem;
+  margin-bottom: 2rem;
+  background-color: rgba(45, 55, 72, var(--bg-opacity));
+  --bg-opacity: 1;
 }

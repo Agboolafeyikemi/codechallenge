@@ -353,3 +353,34 @@ div.options > label > input:checked + img {
 div.options > label > input:checked {
   background-color: black;
 }
+/* .ant-notification-info {
+  /* display: none; */
+/* background-color: #3182ce; */
+/* } */
+/* .ant-notification {
+  background-color: #3182ce;
+}  */
+.ant-notification-notice {
+  background-color: #3182ce !important;
+}
+
+.ant-notification-notice-message {
+  background-color: #3182ce;
+  font-size: 12px;
+  padding: 5% 8%;
+  color: #fff !important;
+}
+.anticon svg {
+}
+
+.layout-container .ant-pagination-total-text {
+  margin-right: 60%;
+}
+
+.layout-container.ant-pagination-options {
+  display: none;
+}
+
+.ant-pagination-options {
+  display: none !important;
+}

@@ -1,9 +1,10 @@
 import React from "react";
 
 import { UploadOutlined } from "@ant-design/icons";
+import { Button, notification, Divider, Space } from "antd";
 
 export const CategoryFilter = (props) => {
-  const { handleClick, active } = props;
+  const { handleClick, active, loadRequest } = props;
   console.log(active.toString(), "FilterParam\n\n\n\n\n");
   const categories = [
     {
@@ -48,7 +49,7 @@ export const CategoryFilter = (props) => {
           <div className="category-name" onClick={() => handleClick(name)}>
             <h3>{name}</h3>
           </div>
-          <div>
+          <div onClick={() => loadRequest()}>
             <UploadOutlined />
           </div>
         </div>

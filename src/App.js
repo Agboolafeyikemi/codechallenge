@@ -9,8 +9,16 @@ import { FilterStorage } from "./components/Filters/FilterStorage";
 import { ProductCard } from "./components/ProductCard";
 
 //utility
-import { Layout, Menu, Spin, Input, Pagination } from "antd";
-import { AudioOutlined } from "@ant-design/icons";
+import {
+  Layout,
+  Menu,
+  Spin,
+  Input,
+  Pagination,
+  Button,
+  notification,
+} from "antd";
+import { AudioOutlined, RadiusBottomleftOutlined } from "@ant-design/icons";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 const App = () => {
@@ -87,11 +95,13 @@ const App = () => {
     setPriceRange(prices);
     console.log("clickedNOWNOWOGOAGBOOLA\n\n\n\n", prices, "\n\n\n\n\n");
   };
-  // console.log(
-  //   item &&
-  //     item.lowestAsk &&
-  //     item.lowestAsk.storageSize == storageValue.toString();
-  // );
+
+  const openNotification = (placement) => {
+    notification.info({
+      message: `Request loaded Successfully`,
+      placement,
+    });
+  };
 
   let search = (items) => {
     return items.filter((item) => {
@@ -213,6 +223,7 @@ const App = () => {
                   <CategoryFilter
                     handleClick={categoryFilter}
                     active={filterParam}
+                    loadRequest={() => openNotification("bottomLeft")}
                   />
                   <PriceFilter
                     filterPrice={handlePriceFilter}
@@ -245,6 +256,14 @@ const App = () => {
                 </Content>
               )}
               {/* <Pagination current={current} onChange={onChange} total={50} /> */}
+              <Pagination
+                total={items.length}
+                showTotal={(total, range) =>
+                  `${range[0]}-${range[1]} of ${total} items`
+                }
+                defaultPageSize={3}
+                defaultCurrent={1}
+              />
             </Layout>
           </Layout>
           );

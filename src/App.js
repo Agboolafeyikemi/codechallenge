@@ -1,17 +1,115 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Deviceimage from "./images/device.png";
 import "./index.css";
-// import "./App.css";
 
 //component
-import { SidebarLayout } from "./components/Layout";
+import { CategoryFilter } from "./components/Filters/CategoryFilter";
+import { PriceFilter } from "./components/Filters/PriceFilter";
+import { FilterStorage } from "./components/Filters/FilterStorage";
+import { ProductCard } from "./components/ProductCard";
 
 //utility
-import { Input, Space } from "antd";
+import { Layout, Menu, Spin, Input, Pagination } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 const App = () => {
+  const { Content, Sider } = Layout;
+
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [items, setItems] = useState([]);
+  const [q, setQ] = useState("");
+  const [searchParam] = useState(["name", "storagesize", "grade"]);
+  const [filterParam, setFilterParam] = useState(["All"]);
+  const [filterStorage, setFilterStorage] = useState([32]);
+  const [current, setCurrent] = useState[3];
+
+  useEffect(() => {
+    fetch(
+      "https://ezeapi-prod-copy.herokuapp.com/api/v1/sell-request/in-stock?sort=new&limit=20&page=1&minPrice=0&maxPrice=2500&storageSizeString=&conditionString=&category=Smartphones&brand=Apple,Samsung,Google,Huawei,LG,Motorola,OnePlus"
+    )
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setItems(result.data.data);
+          console.log(result, "RESULT\n\n\\n\n");
+        },
+        (error) => {
+          console.log(error, "error\n\n\n\n\n ");
+          setIsLoaded(true);
+          setError(error);
+        }
+      );
+  }, []);
+
+  useEffect(() => {
+    if (filterParam === "iPhone") {
+      setIsLoaded(false);
+      fetch(
+        "https://ezeapi-prod-copy.herokuapp.com/api/v1/products/price?category=Smartphones&brand=Apple&sort=lowestAsk&hoursInterval=24&limit=20&page=1&slugId="
+      )
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setIsLoaded(true);
+            setItems(result.data.data);
+            console.log(result, "RESULT\n\n\\n\n22");
+          },
+          (error) => {
+            console.log(error, "error\n\n\n\n\n 22");
+            setIsLoaded(true);
+            setError(error);
+          }
+        );
+    }
+  }, [filterParam]);
+  const onChange = (page) => {
+    console.log(page);
+    this.setState({
+      current: page,
+    });
+  };
+  const categoryFilter = (name) => {
+    setFilterParam(name);
+    console.log("clicked", name, "\n\n\n\n\n");
+  };
+
+  const handleFilterStorage = (size) => {
+    setFilterStorage(size);
+    console.log("clicked", size, "\n\n\n\n\n");
+  };
+
+  let search = (items) => {
+    return items.filter(async (item) => {
+      if (item.category == filterParam) {
+        return searchParam.some((newItem) => {
+          console.log(newItem, "newItem\n\n\n\n\n");
+          return (
+            item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+          );
+        });
+      } else if (filterParam == "All") {
+        return searchParam.some((newItem) => {
+          console.log(item, item[newItem], newItem, "ALLnewItem\n\n\n\n\nALL1");
+          if (item[newItem]) {
+            return (
+              item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) >
+              -1
+            );
+          } else if (item.lowestAsk && item.lowestAsk[newItem]) {
+            return (
+              item.lowestAsk[newItem]
+                .toString()
+                .toLowerCase()
+                .indexOf(q.toLowerCase()) > -1
+            );
+          }
+        });
+      }
+    });
+  };
   const { Search } = Input;
 
   const suffix = (
@@ -22,7 +120,9 @@ const App = () => {
       }}
     />
   );
-
+  if (error) {
+    return <p className="center">{error.message}</p>;
+  }
   return (
     <div className="App">
       <div className="listing-container">
@@ -35,9 +135,10 @@ const App = () => {
                 enterButton="Search"
                 size="large"
                 icon={ArrowRightOutlined}
-                //   onSearch={onSearch}
                 type="text"
                 placeholder="Enter Search Term (e.g iPhone x, 128GB or A1)"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
               />
             </div>
           </div>
@@ -46,7 +147,53 @@ const App = () => {
           </div>
         </section>
         <section className="layout-container">
-          <SidebarLayout />
+          <Layout>
+            <Sider
+              breakpoint="lg"
+              collapsedWidth="0"
+              onBreakpoint={(broken) => {
+                console.log(broken);
+              }}
+              onCollapse={(collapsed, type) => {
+                console.log(collapsed, type);
+              }}
+            >
+              <div className="logo" />
+              <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
+                <div className="filters">
+                  <CategoryFilter
+                    handleClick={categoryFilter}
+                    active={filterParam}
+                  />
+                  <PriceFilter />
+                  <FilterStorage
+                    handleClick={handleFilterStorage}
+                    active={filterStorage}
+                  />
+                </div>
+              </Menu>
+            </Sider>
+            <Layout>
+              {!isLoaded ? (
+                <Spin tip="Loading..." className="center" />
+              ) : (
+                <Content>
+                  <div
+                    className="site-layout-background"
+                    style={{ minHeight: 360 }}
+                  >
+                    <div className="product-card-container">
+                      {search(items)?.map((item) => {
+                        return <ProductCard productDetails={item} />;
+                      })}
+                    </div>
+                  </div>
+                </Content>
+              )}
+              <Pagination current={current} onChange={onChange} total={50} />
+            </Layout>
+          </Layout>
+          );
         </section>
       </div>
     </div>

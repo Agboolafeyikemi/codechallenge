@@ -1,7 +1,8 @@
 import React from "react";
 import { Form, Checkbox, Row } from "antd";
 
-export const FilterStorage = () => {
+export const FilterStorage = (props) => {
+  const { handleClick, active } = props;
   return (
     <Form.Item name="checkbox-group" className="checkbox-group">
       <h2>Storage</h2>
@@ -9,37 +10,41 @@ export const FilterStorage = () => {
         <Checkbox.Group>
           <Row>
             <Checkbox
-              value="A"
+              value="32GB"
               style={{
                 lineHeight: "32px",
               }}
+              onClick={(e) => handleClick(e.target.value)}
             >
               32GB
             </Checkbox>
 
             <Checkbox
-              value="B"
+              value="64GB"
               style={{
                 lineHeight: "32px",
               }}
+              onClick={(e) => handleClick(e.target.value)}
             >
               64GB
             </Checkbox>
 
             <Checkbox
-              value="C"
+              value="128GB"
               style={{
                 lineHeight: "32px",
               }}
+              onClick={(e) => handleClick(e.target.value)}
             >
               128GB
             </Checkbox>
 
             <Checkbox
-              value="F"
+              value=" 256GB"
               style={{
                 lineHeight: "32px",
               }}
+              onClick={(e) => handleClick(e.target.value)}
             >
               256GB
             </Checkbox>

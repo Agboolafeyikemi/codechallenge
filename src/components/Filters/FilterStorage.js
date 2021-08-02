@@ -1,56 +1,37 @@
-import React from "react";
-import { Form, Checkbox, Row } from "antd";
+import React, { useState } from "react";
 
 export const FilterStorage = (props) => {
-  const { handleClick, active } = props;
+  const { handleStorageValue, active } = props;
+
+  console.log();
+
+  const storageSizes = [
+    { id: 1, size: "32GB" },
+    { id: 2, size: "64GB" },
+    { id: 3, size: "120GB" },
+    { id: 4, size: "256GB" },
+  ];
+  const G = (value) => console.log(`value`, value);
+
   return (
-    <Form.Item name="checkbox-group" className="checkbox-group">
+    <div className="checkbox-group">
       <h2>Storage</h2>
-      <div>
-        <Checkbox.Group>
-          <Row>
-            <Checkbox
-              value="32GB"
-              style={{
-                lineHeight: "32px",
-              }}
-              onClick={(e) => handleClick(e.target.value)}
-            >
-              32GB
-            </Checkbox>
-
-            <Checkbox
-              value="64GB"
-              style={{
-                lineHeight: "32px",
-              }}
-              onClick={(e) => handleClick(e.target.value)}
-            >
-              64GB
-            </Checkbox>
-
-            <Checkbox
-              value="128GB"
-              style={{
-                lineHeight: "32px",
-              }}
-              onClick={(e) => handleClick(e.target.value)}
-            >
-              128GB
-            </Checkbox>
-
-            <Checkbox
-              value=" 256GB"
-              style={{
-                lineHeight: "32px",
-              }}
-              onClick={(e) => handleClick(e.target.value)}
-            >
-              256GB
-            </Checkbox>
-          </Row>
-        </Checkbox.Group>
+      <div class="options">
+        {storageSizes?.map(({ id, size }) => (
+          <label title={size} key={id}>
+            <input
+              type="radio"
+              name="size"
+              value={size}
+              key={id}
+              onChange={(e) => handleStorageValue(e.target.value)}
+              //   onChange={(e) => G(e.target.value)}
+            />
+            <img />
+            {size}
+          </label>
+        ))}
       </div>
-    </Form.Item>
+    </div>
   );
 };

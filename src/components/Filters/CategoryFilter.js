@@ -4,7 +4,7 @@ import { UploadOutlined } from "@ant-design/icons";
 
 export const CategoryFilter = (props) => {
   const { handleClick, active } = props;
-  console.log(active.join(""), "FilterParam\n\n\n\n\n");
+  console.log(active.toString(), "FilterParam\n\n\n\n\n");
   const categories = [
     {
       id: "0",
@@ -31,6 +31,7 @@ export const CategoryFilter = (props) => {
       name: "AirPods",
     },
   ];
+
   return (
     <div className="category-filter">
       <h2>Categories</h2>
@@ -39,7 +40,7 @@ export const CategoryFilter = (props) => {
           className="category-list"
           key={id}
           className={
-            active.join("") === name
+            active.toString() === name
               ? "category-list + active"
               : "category-list"
           }

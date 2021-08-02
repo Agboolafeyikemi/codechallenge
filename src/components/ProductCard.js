@@ -17,7 +17,7 @@ export const ProductCard = (props) => {
       <div className="image-con">
         <img src={imgUrl ? imgUrl : SampleImage} alt={name} />
       </div>
-      <h3 className="product-name">{name}</h3>
+      <h4 className="product-name">{name}</h4>
       <div className="unlocked">
         {" "}
         <p>

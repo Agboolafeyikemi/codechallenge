@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Deviceimage from "./images/device.png";
 import "./index.css";
 
-//component
+//components
 import { CategoryFilter } from "./components/Filters/CategoryFilter";
 import { PriceFilter } from "./components/Filters/PriceFilter";
 import { FilterStorage } from "./components/Filters/FilterStorage";
@@ -22,8 +22,7 @@ const App = () => {
   const [q, setQ] = useState("");
   const [searchParam] = useState(["name", "storagesize", "grade"]);
   const [filterParam, setFilterParam] = useState(["All"]);
-  const [filterStorage, setFilterStorage] = useState([32]);
-  const [current, setCurrent] = useState[3];
+  const [storageValue, setStorageValue] = useState("32GB");
 
   useEffect(() => {
     fetch(
@@ -45,7 +44,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (filterParam === "iPhone") {
+    if (filterParam == "iPhone") {
       setIsLoaded(false);
       fetch(
         "https://ezeapi-prod-copy.herokuapp.com/api/v1/products/price?category=Smartphones&brand=Apple&sort=lowestAsk&hoursInterval=24&limit=20&page=1&slugId="
@@ -65,35 +64,59 @@ const App = () => {
         );
     }
   }, [filterParam]);
+
   const onChange = (page) => {
     console.log(page);
     this.setState({
       current: page,
     });
   };
+
   const categoryFilter = (name) => {
     setFilterParam(name);
     console.log("clicked", name, "\n\n\n\n\n");
   };
 
   const handleFilterStorage = (size) => {
-    setFilterStorage(size);
-    console.log("clicked", size, "\n\n\n\n\n");
+    setStorageValue(size);
+    console.log("clickedNOWNOWOGO\n\n\n\n", size, "\n\n\n\n\n");
   };
-
+  // console.log(
+  //   item &&
+  //     item.lowestAsk &&
+  //     item.lowestAsk.storageSize == storageValue.toString()
+  // );
   let search = (items) => {
-    return items.filter(async (item) => {
-      if (item.category == filterParam) {
+    return items.filter((item) => {
+      console.log(
+        item,
+        filterParam.toString(),
+        item.brand,
+        storageValue.toString(),
+        "\n\n\n\n\nITEMFEYIEKMIIIII\n\n\n\n\n\n"
+      );
+      if (
+        item &&
+        item.lowestAsk &&
+        item.lowestAsk.storageSize == storageValue.toString()
+      ) {
+        console.log(item, "\n\n\n\n\n\n\n\nI AM HERE OOOn\n\n\n\n\n\n\n\n\n");
+        return item;
+      } else if (item.brand == filterParam.toString()) {
         return searchParam.some((newItem) => {
-          console.log(newItem, "newItem\n\n\n\n\n");
+          console.log(item[newItem], newItem, "newItemFEYIKEMI\n\n\n\n\n");
           return (
             item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
           );
         });
-      } else if (filterParam == "All") {
+      } else if (
+        filterParam == "iPhone" ||
+        (filterParam == "All" && storageValue == "32GB")
+      ) {
+        console.log("\n\n\n\n\nsecon runing\n\nn\n\n\n\n\n");
         return searchParam.some((newItem) => {
           console.log(item, item[newItem], newItem, "ALLnewItem\n\n\n\n\nALL1");
-          if (item[newItem]) {
+          if (item[newItem] || item.lowestAsk[newItem]) {
             return (
               item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) >
               -1
@@ -167,8 +190,8 @@ const App = () => {
                   />
                   <PriceFilter />
                   <FilterStorage
-                    handleClick={handleFilterStorage}
-                    active={filterStorage}
+                    handleStorageValue={handleFilterStorage}
+                    active={storageValue}
                   />
                 </div>
               </Menu>
@@ -183,14 +206,16 @@ const App = () => {
                     style={{ minHeight: 360 }}
                   >
                     <div className="product-card-container">
-                      {search(items)?.map((item) => {
-                        return <ProductCard productDetails={item} />;
+                      {search(items)?.map((item, index) => {
+                        return (
+                          <ProductCard productDetails={item} key={index} />
+                        );
                       })}
                     </div>
                   </div>
                 </Content>
               )}
-              <Pagination current={current} onChange={onChange} total={50} />
+              {/* <Pagination current={current} onChange={onChange} total={50} /> */}
             </Layout>
           </Layout>
           );

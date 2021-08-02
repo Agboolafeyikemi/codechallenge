@@ -7,6 +7,7 @@ import { CategoryFilter } from "./components/Filters/CategoryFilter";
 import { PriceFilter } from "./components/Filters/PriceFilter";
 import { FilterStorage } from "./components/Filters/FilterStorage";
 import { ProductCard } from "./components/ProductCard";
+import { PaginationComponent } from "./components/Pagination";
 
 //utility
 import {
@@ -14,7 +15,7 @@ import {
   Menu,
   Spin,
   Input,
-  Pagination,
+  // Pagination,
   Button,
   notification,
 } from "antd";
@@ -32,6 +33,12 @@ const App = () => {
   const [filterParam, setFilterParam] = useState(["All"]);
   const [storageValue, setStorageValue] = useState("32GB");
   const [priceRange, setPriceRange] = useState([0, 5000]);
+  // const [offset, setOffset] = useState(0);
+  // const [currentPageElements, setCurrentPageElements] = useState([]);
+  // const [elementsPerPage, setElementsPerPage] = useState(15);
+  // const [pagesCount, setPagesCount] = useState(1);
+  // const [allElements, setAllElements] = useState([]);
+  // const [totalElementsCount, setTotalElementsCount] = useState(0);
 
   useEffect(() => {
     fetch(
@@ -42,6 +49,7 @@ const App = () => {
         (result) => {
           setIsLoaded(true);
           setItems(result.data.data);
+
           console.log(result, "RESULT\n\n\\n\n");
         },
         (error) => {
@@ -256,14 +264,17 @@ const App = () => {
                 </Content>
               )}
               {/* <Pagination current={current} onChange={onChange} total={50} /> */}
-              <Pagination
+              {/* <Pagination
                 total={items.length}
                 showTotal={(total, range) =>
                   `${range[0]}-${range[1]} of ${total} items`
                 }
                 defaultPageSize={3}
                 defaultCurrent={1}
-              />
+                pageSize={elementsPerPage}
+                onChange={this.handlePageClick}
+              /> */}
+              <PaginationComponent products={items} />
             </Layout>
           </Layout>
           );

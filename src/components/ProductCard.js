@@ -1,4 +1,5 @@
 import React from "react";
+import SampleImage from "../images/sampleImage.png";
 
 export const ProductCard = (props) => {
   const { productDetails } = props;
@@ -6,24 +7,30 @@ export const ProductCard = (props) => {
     productDetails: { _id, name, imgUrl, quantity, category, brand },
   } = props;
   const { lowestAsk } = productDetails;
+
   return (
     <div key={_id} className="product-card">
-      <div>
-        <p>{lowestAsk?.grade}</p>
+      <div className="clear-fix">
+        <p>{lowestAsk?.grade ? lowestAsk.grade : "NEW"}</p>
       </div>
       {/* <div> */}
-      <img src={imgUrl} alt={name} />
-      <h3>{name}</h3>
-      <span>
+      <div className="image-con">
+        <img src={imgUrl ? imgUrl : SampleImage} alt={name} />
+      </div>
+      <h4 className="product-name">{name}</h4>
+      <div className="unlocked">
         {" "}
-        Unlocked| <p>{lowestAsk?.storageSize}</p>{" "}
-      </span>
-      <div>
+        <p>
+          Unlocked | {lowestAsk?.storageSize ? lowestAsk.storageSize : "32GB"}
+        </p>{" "}
+      </div>
+      <div className="unit-price">
         <p>Unit Price</p>
-        <h3>${lowestAsk?.price}</h3>
+        <h3>${lowestAsk?.price ? lowestAsk.price : 165}</h3>
       </div>
       {/* </div> */}
-      <div>
+      <p className="quantity">{quantity ? quantity : 1500} Available</p>
+      <div className="btn-con">
         <button>BUY</button>
       </div>
     </div>

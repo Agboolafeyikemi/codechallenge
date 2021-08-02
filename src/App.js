@@ -7,7 +7,7 @@ import { CategoryFilter } from "./components/Filters/CategoryFilter";
 import { PriceFilter } from "./components/Filters/PriceFilter";
 import { FilterStorage } from "./components/Filters/FilterStorage";
 import { ProductCard } from "./components/ProductCard";
-import { PaginationComponent } from "./components/Pagination";
+// import { PaginationComponent } from "./components/Pagination";
 
 //utility
 import {
@@ -15,11 +15,15 @@ import {
   Menu,
   Spin,
   Input,
-  // Pagination,
+  Pagination,
   Button,
   notification,
 } from "antd";
-import { AudioOutlined, RadiusBottomleftOutlined } from "@ant-design/icons";
+import {
+  AudioOutlined,
+  RadiusBottomleftOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 const App = () => {
@@ -33,12 +37,14 @@ const App = () => {
   const [filterParam, setFilterParam] = useState(["All"]);
   const [storageValue, setStorageValue] = useState("32GB");
   const [priceRange, setPriceRange] = useState([0, 5000]);
-  // const [offset, setOffset] = useState(0);
-  // const [currentPageElements, setCurrentPageElements] = useState([]);
-  // const [elementsPerPage, setElementsPerPage] = useState(15);
-  // const [pagesCount, setPagesCount] = useState(1);
-  // const [allElements, setAllElements] = useState([]);
-  // const [totalElementsCount, setTotalElementsCount] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [currentPageElements, setCurrentPageElements] = useState([]);
+  const [elementsPerPage, setElementsPerPage] = useState(15);
+  const [pagesCount, setPagesCount] = useState(1);
+  const [allElements, setAllElements] = useState(this.items);
+  const [totalElementsCount, setTotalElementsCount] = useState(
+    this.item.length
+  );
 
   useEffect(() => {
     fetch(
@@ -49,7 +55,7 @@ const App = () => {
         (result) => {
           setIsLoaded(true);
           setItems(result.data.data);
-
+          setPaginationStates();
           console.log(result, "RESULT\n\n\\n\n");
         },
         (error) => {
@@ -71,6 +77,7 @@ const App = () => {
           (result) => {
             setIsLoaded(true);
             setItems(result.data.data);
+            setPaginationStates();
             console.log(result, "RESULT\n\n\\n\n22");
           },
           (error) => {
@@ -87,6 +94,26 @@ const App = () => {
     this.setState({
       current: page,
     });
+  };
+
+  const setPaginationStates = () => {
+    setPagesCount(Math.ceil(totalElementsCount / elementsPerPage));
+    setElementsForCurrentPage();
+  };
+
+  const setElementsForCurrentPage = () => {
+    const currentPageElements = allElements.slice(
+      offset,
+      offset + elementsPerPage
+    );
+    setCurrentPageElements(currentPageElements);
+  };
+
+  const handlePageClick = (pageNumber) => {
+    const currentPage = pageNumber - 1;
+    const offset = currentPage * elementsPerPage;
+    setOffset(offset);
+    setElementsForCurrentPage();
   };
 
   const categoryFilter = (name) => {
@@ -274,7 +301,23 @@ const App = () => {
                 pageSize={elementsPerPage}
                 onChange={this.handlePageClick}
               /> */}
-              <PaginationComponent products={items} />
+              {/* <PaginationComponent products={items} /> */}
+              {pagesCount > 1 ? (
+                <Pagination
+                  total={totalElementsCount}
+                  showTotal={(total, range) =>
+                    `${range[0]}-${range[1]} of ${total} items`
+                  }
+                  defaultPageSize={3}
+                  defaultCurrent={1}
+                  pageSize={elementsPerPage}
+                  onChange={handlePageClick}
+                />
+              ) : (
+                <center>
+                  <LoadingOutlined spin style={{ fontSize: "2rem" }} />
+                </center>
+              )}
             </Layout>
           </Layout>
           );

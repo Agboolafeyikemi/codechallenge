@@ -23,6 +23,7 @@ const App = () => {
   const [searchParam] = useState(["name", "storagesize", "grade"]);
   const [filterParam, setFilterParam] = useState(["All"]);
   const [storageValue, setStorageValue] = useState("32GB");
+  const [priceRange, setPriceRange] = useState([0, 5000]);
 
   useEffect(() => {
     fetch(
@@ -81,11 +82,17 @@ const App = () => {
     setStorageValue(size);
     console.log("clickedNOWNOWOGO\n\n\n\n", size, "\n\n\n\n\n");
   };
+
+  const handlePriceFilter = (prices) => {
+    setPriceRange(prices);
+    console.log("clickedNOWNOWOGOAGBOOLA\n\n\n\n", prices, "\n\n\n\n\n");
+  };
   // console.log(
   //   item &&
   //     item.lowestAsk &&
-  //     item.lowestAsk.storageSize == storageValue.toString()
+  //     item.lowestAsk.storageSize == storageValue.toString();
   // );
+
   let search = (items) => {
     return items.filter((item) => {
       console.log(
@@ -93,6 +100,14 @@ const App = () => {
         filterParam.toString(),
         item.brand,
         storageValue.toString(),
+        item.lowestAsk?.price,
+        priceRange,
+        Math.min(...priceRange),
+        Math.max(...priceRange),
+        item.lowestAsk?.price >= Math.min(...priceRange) &&
+          item.lowestAsk?.price <= Math.max(...priceRange),
+        priceRange.includes(0, 5000),
+        priceRange.every((elem) => [0, 5000].indexOf(elem) > -1),
         "\n\n\n\n\nITEMFEYIEKMIIIII\n\n\n\n\n\n"
       );
       if (
@@ -101,6 +116,15 @@ const App = () => {
         item.lowestAsk.storageSize == storageValue.toString()
       ) {
         console.log(item, "\n\n\n\n\n\n\n\nI AM HERE OOOn\n\n\n\n\n\n\n\n\n");
+        return item;
+      } else if (
+        item.lowestAsk?.price >= Math.min(...priceRange) &&
+        item.lowestAsk?.price <= Math.max(...priceRange)
+      ) {
+        console.log(
+          item,
+          "\n\n\n\n\n\n\n\n\n\n\n\n\n\nRANGE IS WORKING 00\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+        );
         return item;
       } else if (item.brand == filterParam.toString()) {
         return searchParam.some((newItem) => {
@@ -111,7 +135,9 @@ const App = () => {
         });
       } else if (
         filterParam == "iPhone" ||
-        (filterParam == "All" && storageValue == "32GB")
+        (filterParam == "All" &&
+          storageValue == "32GB" &&
+          priceRange.every((elem) => [0, 5000].indexOf(elem) > -1))
       ) {
         console.log("\n\n\n\n\nsecon runing\n\nn\n\n\n\n\n");
         return searchParam.some((newItem) => {
@@ -188,7 +214,10 @@ const App = () => {
                     handleClick={categoryFilter}
                     active={filterParam}
                   />
-                  <PriceFilter />
+                  <PriceFilter
+                    filterPrice={handlePriceFilter}
+                    active={filterParam}
+                  />
                   <FilterStorage
                     handleStorageValue={handleFilterStorage}
                     active={storageValue}

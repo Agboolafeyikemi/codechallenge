@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 import { Slider, InputNumber } from "antd";
 
-export const PriceFilter = () => {
+export const PriceFilter = (props) => {
+  const { filterPrice } = props;
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(5000);
 
@@ -23,6 +24,11 @@ export const PriceFilter = () => {
       setMax(value);
     }
   };
+  const onAfterChange = (value) => {
+    console.log("onAfterChange: ", value);
+
+    filterPrice(value);
+  };
 
   return (
     <>
@@ -36,6 +42,7 @@ export const PriceFilter = () => {
           range={true}
           defaultValue={[min, max]}
           value={[min, max]}
+          onAfterChange={onAfterChange}
         />
         <div>
           <InputNumber
@@ -43,7 +50,7 @@ export const PriceFilter = () => {
             // className="min-input"
             min={0}
             max={5000}
-            // value={min}
+            value={min}
             onChange={onChangeMin}
           />
         </div>
@@ -54,7 +61,7 @@ export const PriceFilter = () => {
             // className="min-input"
             min={0}
             max={5000}
-            // value={max}
+            value={max}
             onChange={onChangeMax}
           />
         </div>

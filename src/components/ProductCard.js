@@ -13,7 +13,7 @@ export const ProductCard = (props) => {
       <div className="clear-fix">
         <p>{lowestAsk?.grade ? lowestAsk.grade : "NEW"}</p>
       </div>
-      {/* <div> */}
+
       <div className="image-con">
         <img src={imgUrl ? imgUrl : SampleImage} alt={name} />
       </div>
@@ -28,7 +28,6 @@ export const ProductCard = (props) => {
         <p>Unit Price</p>
         <h3>${lowestAsk?.price ? lowestAsk.price : 165}</h3>
       </div>
-      {/* </div> */}
       <p className="quantity">{quantity ? quantity : 1500} Available</p>
       <div className="btn-con">
         <button>BUY</button>

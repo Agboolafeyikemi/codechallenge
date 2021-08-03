@@ -7,7 +7,6 @@ import { CategoryFilter } from "./components/Filters/CategoryFilter";
 import { PriceFilter } from "./components/Filters/PriceFilter";
 import { FilterStorage } from "./components/Filters/FilterStorage";
 import { ProductCard } from "./components/ProductCard";
-// import { PaginationComponent } from "./components/Pagination";
 
 //utility
 import {
@@ -19,6 +18,7 @@ import {
   Button,
   notification,
 } from "antd";
+
 import {
   AudioOutlined,
   RadiusBottomleftOutlined,
@@ -41,20 +41,19 @@ const App = () => {
   const [currentPageElements, setCurrentPageElements] = useState([]);
   const [elementsPerPage, setElementsPerPage] = useState(15);
   const [pagesCount, setPagesCount] = useState(1);
-  const [allElements, setAllElements] = useState(this.items);
-  const [totalElementsCount, setTotalElementsCount] = useState(
-    this.item.length
-  );
-
+  // const [allElements, setAllElements] = useState();
+  const [totalElementsCount, setTotalElementsCount] = useState(0);
+  const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
     fetch(
-      "https://ezeapi-prod-copy.herokuapp.com/api/v1/sell-request/in-stock?sort=new&limit=20&page=1&minPrice=0&maxPrice=2500&storageSizeString=&conditionString=&category=Smartphones&brand=Apple,Samsung,Google,Huawei,LG,Motorola,OnePlus"
+      "https://ezeapi-prod-copy.herokuapp.com/api/v1/sell-request/in-stock?sort=new&limit=200&page=1&minPrice=0&maxPrice=2500&storageSizeString=&conditionString=&category=Smartphones&brand=Apple,Samsung,Google,Huawei,LG,Motorola,OnePlus"
     )
       .then((res) => res.json())
       .then(
         (result) => {
           setIsLoaded(true);
           setItems(result.data.data);
+          setTotalElementsCount(result.data.data.length);
           setPaginationStates();
           console.log(result, "RESULT\n\n\\n\n");
         },
@@ -78,6 +77,7 @@ const App = () => {
             setIsLoaded(true);
             setItems(result.data.data);
             setPaginationStates();
+            setTotalElementsCount(result.data.data.length);
             console.log(result, "RESULT\n\n\\n\n22");
           },
           (error) => {
@@ -95,17 +95,17 @@ const App = () => {
       current: page,
     });
   };
-
+  const toggleC = () => {
+    setCollapsed(true);
+  };
   const setPaginationStates = () => {
     setPagesCount(Math.ceil(totalElementsCount / elementsPerPage));
     setElementsForCurrentPage();
   };
 
   const setElementsForCurrentPage = () => {
-    const currentPageElements = allElements.slice(
-      offset,
-      offset + elementsPerPage
-    );
+    const currentPageElements = items.slice(offset, offset + elementsPerPage);
+    console.log(currentPageElements, "\n\n\n\n\n\nIBKNNNN\n\n\n\n\n\n");
     setCurrentPageElements(currentPageElements);
   };
 
@@ -145,6 +145,7 @@ const App = () => {
         filterParam.toString(),
         item.brand,
         storageValue.toString(),
+        item.lowestAsk?.storageSize,
         item.lowestAsk?.price,
         priceRange,
         Math.min(...priceRange),
@@ -217,6 +218,11 @@ const App = () => {
   if (error) {
     return <p className="center">{error.message}</p>;
   }
+  console.log(
+    currentPageElements,
+    items,
+    "\\n\n\n\n\n\n\n\n\n\n\ncurrentPageElementsm\\n\n\n\n\n\n\n"
+  );
   return (
     <div className="App">
       <div className="listing-container">
@@ -236,21 +242,21 @@ const App = () => {
               />
             </div>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 device">
             <img src={Deviceimage} alt="DeviceImage" />
           </div>
         </section>
         <section className="layout-container">
           <Layout>
             <Sider
+              collapsed={collapsed}
               breakpoint="lg"
               collapsedWidth="0"
               onBreakpoint={(broken) => {
                 console.log(broken);
               }}
-              onCollapse={(collapsed, type) => {
-                console.log(collapsed, type);
-              }}
+              collapsible
+              onCollapse={toggleC}
             >
               <div className="logo" />
               <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
@@ -290,18 +296,7 @@ const App = () => {
                   </div>
                 </Content>
               )}
-              {/* <Pagination current={current} onChange={onChange} total={50} /> */}
-              {/* <Pagination
-                total={items.length}
-                showTotal={(total, range) =>
-                  `${range[0]}-${range[1]} of ${total} items`
-                }
-                defaultPageSize={3}
-                defaultCurrent={1}
-                pageSize={elementsPerPage}
-                onChange={this.handlePageClick}
-              /> */}
-              {/* <PaginationComponent products={items} /> */}
+
               {pagesCount > 1 ? (
                 <Pagination
                   total={totalElementsCount}

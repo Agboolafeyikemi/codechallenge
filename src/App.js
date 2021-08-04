@@ -189,10 +189,7 @@ const App = () => {
       ) {
         console.log("brand code runining");
         return searchParam.some((newItem) => {
-          return (
-            // item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
-            item
-          );
+          return item;
         });
       }
       if (

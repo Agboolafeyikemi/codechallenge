@@ -169,6 +169,24 @@ const App = () => {
         "\n\n\n\n\nITEMFEYIEKMIIIII\n\n\n\n\n\n"
       );
       if (
+        filterParam == "iPhone" ||
+        (filterParam.toString() == "All" &&
+          storageValue.toString() == "32GB" &&
+          priceRange.every((elem) => [0, 5000].indexOf(elem) > -1))
+      ) {
+        return searchParam.some((newItem) => {
+          return (
+            item[newItem]?.toString().toLowerCase().indexOf(q.toLowerCase()) >
+              -1 ||
+            (item?.lowestRequest &&
+              item.lowestRequest[newItem]
+                ?.toString()
+                .toLowerCase()
+                .indexOf(q.toLowerCase()) > -1)
+          );
+        });
+      }
+      if (
         item &&
         item.lowestAsk &&
         item.lowestAsk.storageSize == storageValue.toString() &&
@@ -190,24 +208,6 @@ const App = () => {
         console.log("brand code runining");
         return searchParam.some((newItem) => {
           return item;
-        });
-      }
-      if (
-        filterParam == "iPhone" ||
-        (filterParam.toString() == "All" &&
-          storageValue.toString() == "32GB" &&
-          priceRange.every((elem) => [0, 5000].indexOf(elem) > -1))
-      ) {
-        return searchParam.some((newItem) => {
-          return (
-            item[newItem]?.toString().toLowerCase().indexOf(q.toLowerCase()) >
-              -1 ||
-            (item?.lowestRequest &&
-              item.lowestRequest[newItem]
-                ?.toString()
-                .toLowerCase()
-                .indexOf(q.toLowerCase()) > -1)
-          );
         });
       }
     });

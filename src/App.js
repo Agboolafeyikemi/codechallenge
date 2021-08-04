@@ -270,7 +270,7 @@ const App = () => {
                 </Content>
               )}
 
-              {pagesCount > 1 && (
+              {/* {pagesCount > 1 && (
                 <Pagination
                   total={totalElementsCount}
                   showTotal={(total, range) =>
@@ -281,7 +281,7 @@ const App = () => {
                   pageSize={elementsPerPage}
                   onChange={handlePageClick}
                 />
-              )}
+              )} */}
             </Layout>
           </Layout>
           );

@@ -322,9 +322,9 @@ div.options > label > input:checked {
   color: #fff !important;
 }
 
-/* .layout-container .ant-pagination-total-text {
-  margin-right: 45%;
-} */
+.layout-container .ant-pagination-total-text {
+  margin-right: 54%;
+}
 
 .layout-container.ant-pagination-options {
   display: none;
@@ -343,7 +343,7 @@ div.options > label > input:checked {
 }
 
 .layout-container .ant-pagination-total-text {
-  margin-right: 50%;
+  margin-right: 54%;
   color: #fff;
   font-size: 16px;
 }

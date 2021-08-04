@@ -21,7 +21,7 @@ const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
   const [q, setQ] = useState("");
-  const [searchParam] = useState(["name", "storageSize", "grade"]);
+  const [searchParam] = useState(["storageSize", "name", "grade"]);
   const [filterParam, setFilterParam] = useState(["All"]);
   const [storageValue, setStorageValue] = useState("32GB");
   const [priceRange, setPriceRange] = useState([0, 5000]);
@@ -117,6 +117,34 @@ const App = () => {
     });
   };
 
+  // function search(items) {
+  //   return items.filter((item) => {
+  //     return searchParam.some((newItem) => {
+  //       console.log(
+  //         item?.lowestRequest && item.lowestRequest[newItem]?.toString(),
+  //         item[newItem]?.toString(),
+  //         newItem,
+  //         "NEWITEM\nn\n\n\n\n\\n"
+  //       );
+  //       if (newItem == "grade" || "storageSize") {
+  //         return (
+  //           item?.lowestRequest &&
+  //           item.lowestRequest[newItem]
+  //             ?.toString()
+  //             .toLowerCase()
+  //             .indexOf(q.toLowerCase()) > -1
+  //         );
+  //       }
+  //       if (newItem == "name") {
+  //         return (
+  //           item[newItem]?.toString().toLowerCase().indexOf(q.toLowerCase()) >
+  //           -1
+  //         );
+  //       }
+  //     });
+  //   });
+  // }
+
   let search = (items) => {
     return items.filter((item) => {
       console.log(
@@ -133,47 +161,56 @@ const App = () => {
           item.lowestAsk?.price <= Math.max(...priceRange),
         priceRange.includes(0, 5000),
         priceRange.every((elem) => [0, 5000].indexOf(elem) > -1),
+        storageValue.toString() != "32GB",
+        filterParam.toString() != "All",
+        q,
+        item["name"].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,
+
         "\n\n\n\n\nITEMFEYIEKMIIIII\n\n\n\n\n\n"
       );
       if (
         item &&
         item.lowestAsk &&
-        item.lowestAsk.storageSize == storageValue.toString()
+        item.lowestAsk.storageSize == storageValue.toString() &&
+        storageValue.toString() != "32GB"
       ) {
+        console.log("\n\n\n\nstorage code runining\n\n\n\n\n\n\n\n");
         return item;
       } else if (
+        item &&
         item.lowestAsk?.price >= Math.min(...priceRange) &&
         item.lowestAsk?.price <= Math.max(...priceRange)
       ) {
+        console.log('\n\n\n\nprice code runining\n\n\n\n\n\n\n\n"');
         return item;
-      } else if (item.brand == filterParam.toString()) {
+      } else if (
+        item.brand == filterParam.toString() &&
+        filterParam.toString() != "ALL"
+      ) {
+        console.log("brand code runining");
         return searchParam.some((newItem) => {
           return (
-            item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+            // item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
+            item
           );
         });
-      } else if (
+      }
+      if (
         filterParam == "iPhone" ||
-        (filterParam == "All" &&
-          storageValue == "32GB" &&
+        (filterParam.toString() == "All" &&
+          storageValue.toString() == "32GB" &&
           priceRange.every((elem) => [0, 5000].indexOf(elem) > -1))
       ) {
         return searchParam.some((newItem) => {
-          console.log(item, item[newItem], newItem, "ALLnewItem\n\n\n\n\nALL1");
-          if (item[newItem]) {
-            return (
-              item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) >
-              -1
-            );
-          }
-          // else if (item.lowestAsk && item.lowestAsk[newItem]) {
-          //   return (
-          //     item.lowestAsk[newItem]
-          //       .toString()
-          //       .toLowerCase()
-          //       .indexOf(q.toLowerCase()) > -1
-          //   );
-          // }
+          return (
+            item[newItem]?.toString().toLowerCase().indexOf(q.toLowerCase()) >
+              -1 ||
+            (item?.lowestRequest &&
+              item.lowestRequest[newItem]
+                ?.toString()
+                .toLowerCase()
+                .indexOf(q.toLowerCase()) > -1)
+          );
         });
       }
     });

@@ -9,21 +9,9 @@ import { FilterStorage } from "./components/Filters/FilterStorage";
 import { ProductCard } from "./components/ProductCard";
 
 //utility
-import {
-  Layout,
-  Menu,
-  Spin,
-  Input,
-  Pagination,
-  Button,
-  notification,
-} from "antd";
+import { Layout, Menu, Spin, Input, Pagination, notification } from "antd";
 
-import {
-  AudioOutlined,
-  RadiusBottomleftOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
+import { AudioOutlined } from "@ant-design/icons";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 const App = () => {
@@ -33,7 +21,7 @@ const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
   const [q, setQ] = useState("");
-  const [searchParam] = useState(["name", "storagesize", "grade"]);
+  const [searchParam] = useState(["name", "storageSize", "grade"]);
   const [filterParam, setFilterParam] = useState(["All"]);
   const [storageValue, setStorageValue] = useState("32GB");
   const [priceRange, setPriceRange] = useState([0, 5000]);
@@ -41,7 +29,7 @@ const App = () => {
   const [currentPageElements, setCurrentPageElements] = useState([]);
   const [elementsPerPage, setElementsPerPage] = useState(15);
   const [pagesCount, setPagesCount] = useState(1);
-  // const [allElements, setAllElements] = useState();
+
   const [totalElementsCount, setTotalElementsCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
   useEffect(() => {
@@ -89,12 +77,6 @@ const App = () => {
     }
   }, [filterParam]);
 
-  const onChange = (page) => {
-    console.log(page);
-    this.setState({
-      current: page,
-    });
-  };
   const toggleC = () => {
     setCollapsed(true);
   };
@@ -105,7 +87,7 @@ const App = () => {
 
   const setElementsForCurrentPage = () => {
     const currentPageElements = items.slice(offset, offset + elementsPerPage);
-    console.log(currentPageElements, "\n\n\n\n\n\nIBKNNNN\n\n\n\n\n\n");
+
     setCurrentPageElements(currentPageElements);
   };
 
@@ -118,17 +100,14 @@ const App = () => {
 
   const categoryFilter = (name) => {
     setFilterParam(name);
-    console.log("clicked", name, "\n\n\n\n\n");
   };
 
   const handleFilterStorage = (size) => {
     setStorageValue(size);
-    console.log("clickedNOWNOWOGO\n\n\n\n", size, "\n\n\n\n\n");
   };
 
   const handlePriceFilter = (prices) => {
     setPriceRange(prices);
-    console.log("clickedNOWNOWOGOAGBOOLA\n\n\n\n", prices, "\n\n\n\n\n");
   };
 
   const openNotification = (placement) => {
@@ -161,20 +140,14 @@ const App = () => {
         item.lowestAsk &&
         item.lowestAsk.storageSize == storageValue.toString()
       ) {
-        console.log(item, "\n\n\n\n\n\n\n\nI AM HERE OOOn\n\n\n\n\n\n\n\n\n");
         return item;
       } else if (
         item.lowestAsk?.price >= Math.min(...priceRange) &&
         item.lowestAsk?.price <= Math.max(...priceRange)
       ) {
-        console.log(
-          item,
-          "\n\n\n\n\n\n\n\n\n\n\n\n\n\nRANGE IS WORKING 00\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-        );
         return item;
       } else if (item.brand == filterParam.toString()) {
         return searchParam.some((newItem) => {
-          console.log(item[newItem], newItem, "newItemFEYIKEMI\n\n\n\n\n");
           return (
             item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) > -1
           );
@@ -185,22 +158,22 @@ const App = () => {
           storageValue == "32GB" &&
           priceRange.every((elem) => [0, 5000].indexOf(elem) > -1))
       ) {
-        console.log("\n\n\n\n\nsecon runing\n\nn\n\n\n\n\n");
         return searchParam.some((newItem) => {
           console.log(item, item[newItem], newItem, "ALLnewItem\n\n\n\n\nALL1");
-          if (item[newItem] || item.lowestAsk[newItem]) {
+          if (item[newItem]) {
             return (
               item[newItem].toString().toLowerCase().indexOf(q.toLowerCase()) >
               -1
             );
-          } else if (item.lowestAsk && item.lowestAsk[newItem]) {
-            return (
-              item.lowestAsk[newItem]
-                .toString()
-                .toLowerCase()
-                .indexOf(q.toLowerCase()) > -1
-            );
           }
+          // else if (item.lowestAsk && item.lowestAsk[newItem]) {
+          //   return (
+          //     item.lowestAsk[newItem]
+          //       .toString()
+          //       .toLowerCase()
+          //       .indexOf(q.toLowerCase()) > -1
+          //   );
+          // }
         });
       }
     });
@@ -255,7 +228,7 @@ const App = () => {
               onBreakpoint={(broken) => {
                 console.log(broken);
               }}
-              collapsible
+              // collapsible
               onCollapse={toggleC}
             >
               <div className="logo" />
@@ -297,7 +270,7 @@ const App = () => {
                 </Content>
               )}
 
-              {pagesCount > 1 ? (
+              {pagesCount > 1 && (
                 <Pagination
                   total={totalElementsCount}
                   showTotal={(total, range) =>
@@ -308,10 +281,6 @@ const App = () => {
                   pageSize={elementsPerPage}
                   onChange={handlePageClick}
                 />
-              ) : (
-                <center>
-                  <LoadingOutlined spin style={{ fontSize: "2rem" }} />
-                </center>
               )}
             </Layout>
           </Layout>

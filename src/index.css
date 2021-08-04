@@ -326,7 +326,7 @@ div.options > label > input:checked {
 }
 
 .layout-container .ant-pagination-total-text {
-  margin-right: 54%;
+  margin-right: 45%;
 }
 
 .layout-container.ant-pagination-options {
@@ -343,6 +343,12 @@ div.options > label > input:checked {
 }
 .ant-input-group-addon {
   background-color: #3182ce;
+}
+
+.layout-container .ant-pagination-total-text {
+  margin-right: 45%;
+  color: #fff;
+  font-size: 16px;
 }
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {

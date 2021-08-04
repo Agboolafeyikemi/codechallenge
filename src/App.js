@@ -64,8 +64,9 @@ const App = () => {
           (result) => {
             setIsLoaded(true);
             setItems(result.data.data);
-            setPaginationStates();
+
             setTotalElementsCount(result.data.data.length);
+            setPaginationStates();
           },
           (error) => {
             setIsLoaded(true);
@@ -75,25 +76,23 @@ const App = () => {
     }
   }, [filterParam]);
 
-  const toggleC = () => {
-    setCollapsed(true);
-  };
+  useEffect(() => {
+    const PageElements = items.slice(offset, offset + elementsPerPage);
+    setCurrentPageElements(PageElements);
+  }, [pagesCount]);
+
   const setPaginationStates = () => {
     setPagesCount(Math.ceil(totalElementsCount / elementsPerPage));
-    setElementsForCurrentPage();
   };
 
-  const setElementsForCurrentPage = () => {
-    const currentPageElements = items.slice(offset, offset + elementsPerPage);
-
-    setCurrentPageElements(currentPageElements);
+  const toggleC = () => {
+    setCollapsed(true);
   };
 
   const handlePageClick = (pageNumber) => {
     const currentPage = pageNumber - 1;
     const offset = currentPage * elementsPerPage;
     setOffset(offset);
-    setElementsForCurrentPage();
   };
 
   const categoryFilter = (name) => {
@@ -175,6 +174,7 @@ const App = () => {
   }
   console.log(
     currentPageElements,
+    "n\n\n\n\n\n\n\n\n\n\n\n",
     items,
     "\\n\n\n\n\n\n\n\n\n\n\ncurrentPageElementsm\\n\n\n\n\n\n\n"
   );
@@ -242,7 +242,7 @@ const App = () => {
                     style={{ minHeight: 360 }}
                   >
                     <div className="product-card-container">
-                      {search(items)?.map((item, index) => {
+                      {search(currentPageElements)?.map((item, index) => {
                         return (
                           <ProductCard productDetails={item} key={index} />
                         );
@@ -251,19 +251,18 @@ const App = () => {
                   </div>
                 </Content>
               )}
-
-              {/* {pagesCount > 1 && (
+              <div className="pagination">
+                {/* {pagesCount > 1 && ( */}
                 <Pagination
                   total={totalElementsCount}
-                  showTotal={(total, range) =>
-                    `${range[0]}-${range[1]} of ${total} items`
-                  }
+                  showTotal={(total, range) => `${range[0]} of ${total} items`}
                   defaultPageSize={3}
                   defaultCurrent={1}
                   pageSize={elementsPerPage}
                   onChange={handlePageClick}
                 />
-              )} */}
+                {/* )} */}
+              </div>
             </Layout>
           </Layout>
           );

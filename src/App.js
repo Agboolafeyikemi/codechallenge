@@ -32,6 +32,8 @@ const App = () => {
 
   const [totalElementsCount, setTotalElementsCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
+
+  // fetch data
   useEffect(() => {
     fetch(
       "https://ezeapi-prod-copy.herokuapp.com/api/v1/sell-request/in-stock?sort=new&limit=200&page=1&minPrice=0&maxPrice=2500&storageSizeString=&conditionString=&category=Smartphones&brand=Apple,Samsung,Google,Huawei,LG,Motorola,OnePlus"
@@ -43,10 +45,8 @@ const App = () => {
           setItems(result.data.data);
           setTotalElementsCount(result.data.data.length);
           setPaginationStates();
-          console.log(result, "RESULT\n\n\\n\n");
         },
         (error) => {
-          console.log(error, "error\n\n\n\n\n ");
           setIsLoaded(true);
           setError(error);
         }
@@ -66,10 +66,8 @@ const App = () => {
             setItems(result.data.data);
             setPaginationStates();
             setTotalElementsCount(result.data.data.length);
-            console.log(result, "RESULT\n\n\\n\n22");
           },
           (error) => {
-            console.log(error, "error\n\n\n\n\n 22");
             setIsLoaded(true);
             setError(error);
           }
@@ -117,95 +115,45 @@ const App = () => {
     });
   };
 
-  // function search(items) {
-  //   return items.filter((item) => {
-  //     return searchParam.some((newItem) => {
-  //       console.log(
-  //         item?.lowestRequest && item.lowestRequest[newItem]?.toString(),
-  //         item[newItem]?.toString(),
-  //         newItem,
-  //         "NEWITEM\nn\n\n\n\n\\n"
-  //       );
-  //       if (newItem == "grade" || "storageSize") {
-  //         return (
-  //           item?.lowestRequest &&
-  //           item.lowestRequest[newItem]
-  //             ?.toString()
-  //             .toLowerCase()
-  //             .indexOf(q.toLowerCase()) > -1
-  //         );
-  //       }
-  //       if (newItem == "name") {
-  //         return (
-  //           item[newItem]?.toString().toLowerCase().indexOf(q.toLowerCase()) >
-  //           -1
-  //         );
-  //       }
-  //     });
-  //   });
-  // }
-
   let search = (items) => {
     return items.filter((item) => {
-      console.log(
-        item,
-        filterParam.toString(),
-        item.brand,
-        storageValue.toString(),
-        item.lowestAsk?.storageSize,
-        item.lowestAsk?.price,
-        priceRange,
-        Math.min(...priceRange),
-        Math.max(...priceRange),
-        item.lowestAsk?.price >= Math.min(...priceRange) &&
-          item.lowestAsk?.price <= Math.max(...priceRange),
-        priceRange.includes(0, 5000),
-        priceRange.every((elem) => [0, 5000].indexOf(elem) > -1),
-        storageValue.toString() != "32GB",
-        filterParam.toString() != "All",
-        q,
-        item["name"].toString().toLowerCase().indexOf(q.toLowerCase()) > -1,
-
-        "\n\n\n\n\nITEMFEYIEKMIIIII\n\n\n\n\n\n"
-      );
       if (
         filterParam == "iPhone" ||
         (filterParam.toString() == "All" &&
           storageValue.toString() == "32GB" &&
           priceRange.every((elem) => [0, 5000].indexOf(elem) > -1))
       ) {
-        return searchParam.some((newItem) => {
-          return (
-            item[newItem]?.toString().toLowerCase().indexOf(q.toLowerCase()) >
-              -1 ||
-            (item?.lowestRequest &&
-              item.lowestRequest[newItem]
-                ?.toString()
-                .toLowerCase()
-                .indexOf(q.toLowerCase()) > -1)
-          );
-        });
-      }
-      if (
+        return (
+          item["name"]?.toString().toLowerCase().indexOf(q.toLowerCase()) >
+            -1 ||
+          (item?.lowestRequest &&
+            item.lowestRequest["grade"]
+              ?.toString()
+              .toLowerCase()
+              .indexOf(q.toLowerCase()) > -1) ||
+          (item?.lowestRequest &&
+            item.lowestRequest["storageSize"]
+              ?.toString()
+              .toLowerCase()
+              .indexOf(q.toLowerCase()) > -1)
+        );
+      } else if (
         item &&
         item.lowestAsk &&
         item.lowestAsk.storageSize == storageValue.toString() &&
         storageValue.toString() != "32GB"
       ) {
-        console.log("\n\n\n\nstorage code runining\n\n\n\n\n\n\n\n");
         return item;
       } else if (
         item &&
         item.lowestAsk?.price >= Math.min(...priceRange) &&
         item.lowestAsk?.price <= Math.max(...priceRange)
       ) {
-        console.log('\n\n\n\nprice code runining\n\n\n\n\n\n\n\n"');
         return item;
       } else if (
         item.brand == filterParam.toString() &&
         filterParam.toString() != "ALL"
       ) {
-        console.log("brand code runining");
         return searchParam.some((newItem) => {
           return item;
         });

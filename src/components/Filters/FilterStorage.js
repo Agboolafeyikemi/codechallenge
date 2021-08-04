@@ -16,7 +16,7 @@ export const FilterStorage = (props) => {
   return (
     <div className="checkbox-group">
       <h2>Storage</h2>
-      <div class="options">
+      <div className="options">
         {storageSizes?.map(({ id, size }) => (
           <label title={size} key={id}>
             <input

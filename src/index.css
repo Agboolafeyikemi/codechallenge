@@ -13,10 +13,6 @@ html {
   line-height: 1.5;
 }
 
-code {
-  /* font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace; */
-}
 html {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Helvetica Neue, Arial, Noto Sans, sans-serif;
@@ -92,11 +88,6 @@ html {
 .ant-layout-sider-children {
   background-color: #2d3748;
 }
-/* .layout-container .ant-menu.ant-menu-dark,
-.ant-menu-dark .ant-menu-sub,
-.ant-menu.ant-menu-dark .ant-menu-sub {
-  background-color: #2d3748;
-} */
 
 .layout-container .ant-layout-sider {
   min-width: 300px !important;
@@ -129,7 +120,6 @@ html {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* margin: 15px auto; */
 }
 
 .category-name h3 {
@@ -156,38 +146,10 @@ html {
   text-align: center;
 }
 
-/* .checkbox-group .ant-row {
-  display: block;
-  /* flex-flow: row wrap;*/
-/* } */
-/* .checkbox-group .ant-checkbox-wrapper {
-  display: flex;
-} */
 .checkbox-group .ant-checkbox-wrapper + .ant-checkbox-wrapper {
   margin-left: 0;
 }
-*/
 
-/* .checkbox-group .ant-checkbox-inner {
-  background-color: #2d3748;
-  border-radius: 2px;
-  border: 2px solid #1a202c; */
-/* width: 20px;
-  height: 20px; */
-/* } */
-/* .checkbox-group .ant-checkbox-checked .ant-checkbox-inner { */
-/* background-color: #1890ff; */
-/* border-color: none;
-
-  color: #fff;
-  background-color: #1a202c;
-}
-
-.checkbox-group .ant-checkbox + span {
-  font-size: 0.875rem;
-  color: #fff;
-  font-weight: 600;
-} */
 .category-name:hover {
   border-left-width: 4px;
 }
@@ -310,12 +272,7 @@ button {
 .checkRadioContainer {
   max-width: 10em;
 }
-/* div.checkRadioContainer > label {
-  display: block;
-  border: 2px solid grey;
-  margin-bottom: -2px;
-  cursor: pointer;
-} */
+
 .options {
   width: 80%;
   margin: auto;
@@ -353,13 +310,7 @@ div.options > label > input:checked + img {
 div.options > label > input:checked {
   background-color: black;
 }
-/* .ant-notification-info {
-  /* display: none; */
-/* background-color: #3182ce; */
-/* } */
-/* .ant-notification {
-  background-color: #3182ce;
-}  */
+
 .ant-notification-notice {
   background-color: #3182ce !important;
 }
@@ -383,4 +334,80 @@ div.options > label > input:checked {
 
 .ant-pagination-options {
   display: none !important;
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  body {
+    background-color: #1a202c;
+  }
+  .product-card {
+    width: 40%;
+  }
+  .listing-text {
+    padding-right: 0;
+  }
+
+  .listing-text h1 {
+    font-size: 2rem;
+  }
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 480px) and (max-device-width: 768px) {
+  body {
+    background-color: #1a202c;
+  }
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+  .listing-section {
+    display: block;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .listing-section h1 {
+    text-align: center;
+    font-size: 1.5rem;
+    width: 69%;
+    margin: auto;
+  }
+  .listing-text {
+    padding-right: 0;
+  }
+  .input-container .ant-input-group-wrapper {
+    width: 90%;
+  }
+  .input-container .ant-input-group {
+    margin: auto;
+
+    width: 90%;
+  }
+  .device {
+    width: 60%;
+    margin: auto;
+    margin-top: 30px;
+  }
+  body {
+    background-color: #1a202c;
+  }
+  .ant-layout {
+    position: relative;
+    overflow: hidden;
+    min-width: 100vw;
+  }
+  .layout-container .ant-layout-sider {
+    display: none;
+  }
+  .product-card {
+    width: 40%;
+    margin: 11px;
+  }
+  .product-name {
+    white-space: normal;
+  }
+}
+
+@media only screen and (min-device-width: 200px) and (max-device-width: 320px) {
 }

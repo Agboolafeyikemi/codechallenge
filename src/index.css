@@ -142,7 +142,6 @@ html {
 }
 .separator {
   --text-opacity: 1;
-  /* color: #4a5568; */
   color: rgba(74, 85, 104, var(--text-opacity));
   text-align: center;
 }
@@ -321,8 +320,6 @@ div.options > label > input:checked {
   font-size: 12px;
   padding: 5% 8%;
   color: #fff !important;
-}
-.anticon svg {
 }
 
 .layout-container .ant-pagination-total-text {

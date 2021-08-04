@@ -1,11 +1,10 @@
 import React from "react";
 
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, notification, Divider, Space } from "antd";
 
 export const CategoryFilter = (props) => {
   const { handleClick, active, loadRequest } = props;
-  console.log(active.toString(), "FilterParam\n\n\n\n\n");
+
   const categories = [
     {
       id: "0",

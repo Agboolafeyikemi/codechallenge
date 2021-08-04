@@ -25,8 +25,6 @@ export const PriceFilter = (props) => {
     }
   };
   const onAfterChange = (value) => {
-    console.log("onAfterChange: ", value);
-
     filterPrice(value);
   };
 
@@ -35,7 +33,6 @@ export const PriceFilter = (props) => {
       <div className="price-filter">
         <h2>Price Filter</h2>
         <Slider
-          //   className="slider-main-div"
           min={0}
           max={5000}
           onChange={onChange}
@@ -47,7 +44,6 @@ export const PriceFilter = (props) => {
         <div>
           <InputNumber
             placeholder="Min: 0"
-            // className="min-input"
             min={0}
             max={5000}
             value={min}
@@ -58,7 +54,6 @@ export const PriceFilter = (props) => {
         <div>
           <InputNumber
             placeholder="Max: 5000"
-            // className="min-input"
             min={0}
             max={5000}
             value={max}

@@ -10,13 +10,11 @@ import { ProductCard } from "./components/ProductCard";
 
 //utility
 import { Layout, Menu, Spin, Input, Pagination, notification } from "antd";
-
 import { AudioOutlined } from "@ant-design/icons";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 const App = () => {
-  const { Content, Sider } = Layout;
-
+  //state
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
@@ -29,9 +27,10 @@ const App = () => {
   const [currentPageElements, setCurrentPageElements] = useState([]);
   const [elementsPerPage, setElementsPerPage] = useState(15);
   const [pagesCount, setPagesCount] = useState(1);
-
   const [totalElementsCount, setTotalElementsCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
+
+  const { Content, Sider } = Layout;
 
   // fetch data
   useEffect(() => {
@@ -41,18 +40,21 @@ const App = () => {
       .then((res) => res.json())
       .then(
         (result) => {
+          //updates state
           setIsLoaded(true);
           setItems(result.data.data);
           setTotalElementsCount(result.data.data.length);
           setPaginationStates();
         },
         (error) => {
+          //updates state
           setIsLoaded(true);
           setError(error);
         }
       );
   }, []);
 
+  //fetch iphones data
   useEffect(() => {
     if (filterParam == "iPhone") {
       setIsLoaded(false);
@@ -114,6 +116,7 @@ const App = () => {
     });
   };
 
+  // handle search
   let search = (items) => {
     return items.filter((item) => {
       if (
@@ -136,20 +139,26 @@ const App = () => {
               .toLowerCase()
               .indexOf(q.toLowerCase()) > -1)
         );
-      } else if (
+      }
+      // filter by product storage
+      else if (
         item &&
         item.lowestAsk &&
         item.lowestAsk.storageSize == storageValue.toString() &&
         storageValue.toString() != "32GB"
       ) {
         return item;
-      } else if (
+      }
+      //filter by minimum and maximum price
+      else if (
         item &&
         item.lowestAsk?.price >= Math.min(...priceRange) &&
         item.lowestAsk?.price <= Math.max(...priceRange)
       ) {
         return item;
-      } else if (
+      }
+      //filter by product brand
+      else if (
         item.brand == filterParam.toString() &&
         filterParam.toString() != "ALL"
       ) {
@@ -161,23 +170,11 @@ const App = () => {
   };
   const { Search } = Input;
 
-  const suffix = (
-    <AudioOutlined
-      style={{
-        fontSize: 16,
-        color: "#1890ff",
-      }}
-    />
-  );
+  //handle error
   if (error) {
     return <p className="center">{error.message}</p>;
   }
-  console.log(
-    currentPageElements,
-    "n\n\n\n\n\n\n\n\n\n\n\n",
-    items,
-    "\\n\n\n\n\n\n\n\n\n\n\ncurrentPageElementsm\\n\n\n\n\n\n\n"
-  );
+  // render component
   return (
     <div className="App">
       <div className="listing-container">
@@ -207,10 +204,6 @@ const App = () => {
               collapsed={collapsed}
               breakpoint="lg"
               collapsedWidth="0"
-              onBreakpoint={(broken) => {
-                console.log(broken);
-              }}
-              // collapsible
               onCollapse={toggleC}
             >
               <div className="logo" />
@@ -242,6 +235,7 @@ const App = () => {
                     style={{ minHeight: 360 }}
                   >
                     <div className="product-card-container">
+                      {/* wrap the returned data with search function. */}
                       {search(currentPageElements)?.map((item, index) => {
                         return (
                           <ProductCard productDetails={item} key={index} />
@@ -252,7 +246,7 @@ const App = () => {
                 </Content>
               )}
               <div className="pagination">
-                {/* {pagesCount > 1 && ( */}
+                {/* render pagination */}
                 <Pagination
                   total={totalElementsCount}
                   showTotal={(total, range) => `${range[0]} of ${total} items`}
@@ -261,7 +255,6 @@ const App = () => {
                   pageSize={elementsPerPage}
                   onChange={handlePageClick}
                 />
-                {/* )} */}
               </div>
             </Layout>
           </Layout>

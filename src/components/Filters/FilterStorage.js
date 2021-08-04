@@ -3,7 +3,6 @@ import React, { useState } from "react";
 export const FilterStorage = (props) => {
   const { handleStorageValue, active } = props;
 
-  console.log();
 
   const storageSizes = [
     { id: 1, size: "32GB" },
@@ -25,7 +24,7 @@ export const FilterStorage = (props) => {
               value={size}
               key={id}
               onChange={(e) => handleStorageValue(e.target.value)}
-              //   onChange={(e) => G(e.target.value)}
+            
             />
             <img />
             {size}

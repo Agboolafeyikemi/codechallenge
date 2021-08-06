@@ -10,7 +10,6 @@ import { ProductCard } from "./components/ProductCard";
 
 //utility
 import { Layout, Menu, Spin, Input, Pagination, notification } from "antd";
-import { AudioOutlined } from "@ant-design/icons";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 const App = () => {
@@ -116,7 +115,7 @@ const App = () => {
     });
   };
 
-  // handle search
+  // handle search and return products fetched
   let search = (items) => {
     return items.filter((item) => {
       if (

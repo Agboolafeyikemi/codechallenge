@@ -4,7 +4,7 @@ import SampleImage from "../images/sampleImage.png";
 export const ProductCard = (props) => {
   const { productDetails } = props;
   const {
-    productDetails: { _id, name, imgUrl, quantity, category, brand },
+    productDetails: { _id, name, imgUrl, quantity },
   } = props;
   const { lowestAsk } = productDetails;
 

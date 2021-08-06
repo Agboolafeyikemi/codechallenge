@@ -37,7 +37,6 @@ export const CategoryFilter = (props) => {
       <h2>Categories</h2>
       {categories?.map(({ id, name }) => (
         <div
-          className="category-list"
           key={id}
           className={
             active.toString() === name

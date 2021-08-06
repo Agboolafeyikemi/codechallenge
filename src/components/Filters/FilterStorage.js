@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 
 export const FilterStorage = (props) => {
-  const { handleStorageValue, active } = props;
-
+  const { handleStorageValue } = props;
 
   const storageSizes = [
     { id: 1, size: "32GB" },
@@ -10,7 +9,6 @@ export const FilterStorage = (props) => {
     { id: 3, size: "120GB" },
     { id: 4, size: "256GB" },
   ];
-  const G = (value) => console.log(`value`, value);
 
   return (
     <div className="checkbox-group">
@@ -24,9 +22,8 @@ export const FilterStorage = (props) => {
               value={size}
               key={id}
               onChange={(e) => handleStorageValue(e.target.value)}
-            
             />
-            <img />
+            <img alt="checkbox-input" />
             {size}
           </label>
         ))}

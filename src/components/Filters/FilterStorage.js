@@ -1,4 +1,5 @@
 import React from "react";
+import markIcon from "../../images/check-mark.svg";
 
 export const FilterStorage = (props) => {
   const { handleStorageValue } = props;
@@ -23,7 +24,7 @@ export const FilterStorage = (props) => {
               key={id}
               onChange={(e) => handleStorageValue(e.target.value)}
             />
-            <img alt="checkbox-input" />
+            <img />
             {size}
           </label>
         ))}

@@ -129,9 +129,8 @@ const App = () => {
   const search = (items) => {
     return items.filter((item) => {
       /*
- // in here we check if our region is equal to our c state
- // if it's equal to then only return the items that match
- // if not return All the countries
+ //  check if product match search query
+ // if not return All the  products
  */
       if (q.length !== 0) {
         return searchParam.some((newItem) => {

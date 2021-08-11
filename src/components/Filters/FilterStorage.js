@@ -10,8 +10,6 @@ export const FilterStorage = (props) => {
     { id: 4, size: "256GB" },
   ];
 
- 
-
   return (
     <div className="checkbox-group">
       <h2>Storage</h2>
@@ -27,7 +25,6 @@ export const FilterStorage = (props) => {
               name="size"
               value={size}
               key={id}
-              checked={size == active}
               onChange={(e) => handleStorageValue(e.target.value)}
             />
             <img />

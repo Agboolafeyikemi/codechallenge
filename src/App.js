@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Deviceimage from "./images/device.png";
-import "./index.css";
 
+import "./index.css";
+//images;
+import Deviceimage from "./images/device.png";
+import Hamburger from "./images/menu.png";
 //components
 import { CategoryFilter } from "./components/Filters/CategoryFilter";
 import { PriceFilter } from "./components/Filters/PriceFilter";
@@ -9,7 +11,15 @@ import { FilterStorage } from "./components/Filters/FilterStorage";
 import { ProductCard } from "./components/ProductCard";
 
 //utility
-import { Layout, Menu, Spin, Input, Pagination, notification } from "antd";
+import {
+  Layout,
+  Menu,
+  Spin,
+  Input,
+  Pagination,
+  notification,
+  Drawer,
+} from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 
 const App = () => {
@@ -19,22 +29,32 @@ const App = () => {
   const [items, setItems] = useState([]);
   const [q, setQ] = useState("");
   const [searchParam] = useState(["storageSize", "name", "grade"]);
-  const [filterParam, setFilterParam] = useState(["All"]);
+  const [filterParam, setFilterParam] = useState(
+    "Apple,Samsung,Google,Huawei,LG,Motorola,OnePlus"
+  );
   const [storageValue, setStorageValue] = useState("32GB");
-  const [priceRange, setPriceRange] = useState([0, 5000]);
+  const [priceRange, setPriceRange] = useState([0, 2500]);
   const [offset, setOffset] = useState(0);
   const [currentPageElements, setCurrentPageElements] = useState([]);
   const [elementsPerPage, setElementsPerPage] = useState(15);
   const [pagesCount, setPagesCount] = useState(1);
   const [totalElementsCount, setTotalElementsCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const { Content, Sider } = Layout;
+
+  const minPrice = Math.min(...priceRange);
+  const maxPrice = Math.max(...priceRange).toString();
 
   // fetch data
   useEffect(() => {
     fetch(
-      "https://ezeapi-prod-copy.herokuapp.com/api/v1/sell-request/in-stock?sort=new&limit=200&page=1&minPrice=0&maxPrice=2500&storageSizeString=&conditionString=&category=Smartphones&brand=Apple,Samsung,Google,Huawei,LG,Motorola,OnePlus"
+      `https://ezeapi-prod-copy.herokuapp.com/api/v1/sell-request/in-stock?sort=new&limit=200&page=1&minPrice=${Math.min(
+        ...priceRange
+      )}&maxPrice=${Math.max(
+        ...priceRange
+      ).toString()}&storageSizeString=${storageValue}&conditionString=&category=Smartphones&brand=${filterParam}`
     )
       .then((res) => res.json())
       .then(
@@ -51,43 +71,29 @@ const App = () => {
           setError(error);
         }
       );
-  }, []);
-
-  //fetch iphones data
-  useEffect(() => {
-    if (filterParam == "iPhone") {
-      setIsLoaded(false);
-      fetch(
-        "https://ezeapi-prod-copy.herokuapp.com/api/v1/products/price?category=Smartphones&brand=Apple&sort=lowestAsk&hoursInterval=24&limit=20&page=1&slugId="
-      )
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            setIsLoaded(true);
-            setItems(result.data.data);
-
-            setTotalElementsCount(result.data.data.length);
-            setPaginationStates();
-          },
-          (error) => {
-            setIsLoaded(true);
-            setError(error);
-          }
-        );
-    }
-  }, [filterParam]);
+  }, [filterParam, storageValue, minPrice, maxPrice]);
 
   useEffect(() => {
     const PageElements = items.slice(offset, offset + elementsPerPage);
     setCurrentPageElements(PageElements);
-  }, [pagesCount]);
+  }, [pagesCount, offset]);
 
+  // const getRandomArbitrary = (min, max) => {
+  //   console.log(`runing`);
+  //   return Math.random() * (max - min) + min;
+  // };
   const setPaginationStates = () => {
     setPagesCount(Math.ceil(totalElementsCount / elementsPerPage));
   };
 
   const toggleC = () => {
     setCollapsed(true);
+  };
+  const showDrawer = () => {
+    setVisible(true);
+  };
+  const onClose = () => {
+    setVisible(false);
   };
 
   const handlePageClick = (pageNumber) => {
@@ -97,14 +103,17 @@ const App = () => {
   };
 
   const categoryFilter = (name) => {
+    setVisible(false);
     setFilterParam(name);
   };
 
   const handleFilterStorage = (size) => {
+    setVisible(false);
     setStorageValue(size);
   };
 
   const handlePriceFilter = (prices) => {
+    setVisible(false);
     setPriceRange(prices);
   };
 
@@ -116,63 +125,49 @@ const App = () => {
   };
 
   // handle search and return products fetched
-  let search = (items) => {
+
+  const search = (items) => {
     return items.filter((item) => {
-      if (
-        filterParam == "iPhone" ||
-        (filterParam.toString() == "All" &&
-          storageValue.toString() == "32GB" &&
-          priceRange.every((elem) => [0, 5000].indexOf(elem) > -1))
-      ) {
-        return (
-          item["name"]?.toString().toLowerCase().indexOf(q.toLowerCase()) >
-            -1 ||
-          (item?.lowestRequest &&
-            item.lowestRequest["grade"]
-              ?.toString()
-              .toLowerCase()
-              .indexOf(q.toLowerCase()) > -1) ||
-          (item?.lowestRequest &&
-            item.lowestRequest["storageSize"]
-              ?.toString()
-              .toLowerCase()
-              .indexOf(q.toLowerCase()) > -1)
-        );
-      }
-      // filter by product storage
-      else if (
-        item &&
-        item.lowestAsk &&
-        item.lowestAsk.storageSize == storageValue.toString() &&
-        storageValue.toString() != "32GB"
-      ) {
-        return item;
-      }
-      //filter by minimum and maximum price
-      else if (
-        item &&
-        item.lowestAsk?.price >= Math.min(...priceRange) &&
-        item.lowestAsk?.price <= Math.max(...priceRange)
-      ) {
-        return item;
-      }
-      //filter by product brand
-      else if (
-        item.brand == filterParam.toString() &&
-        filterParam.toString() != "ALL"
-      ) {
+      /*
+ // in here we check if our region is equal to our c state
+ // if it's equal to then only return the items that match
+ // if not return All the countries
+ */
+      if (q.length !== 0) {
         return searchParam.some((newItem) => {
-          return item;
+          return (
+            item[newItem]?.toString().toLowerCase().indexOf(q.toLowerCase()) >
+              -1 ||
+            (item.lowestRequest &&
+              item.lowestRequest[newItem]
+                ?.toString()
+                .toLowerCase()
+                .indexOf(q.toLowerCase()) > -1) ||
+            (item.lowestRequest &&
+              item.lowestRequest["age"]
+                ?.toString()
+                .toLowerCase()
+                .indexOf(q.toLowerCase()) > -1) ||
+            (item.lowestRequest &&
+              item.lowestRequest["storageSize"]
+                ?.toString()
+                .toLowerCase()
+                .indexOf(q.toLowerCase()) > -1)
+          );
         });
+      } else if (q.length === 0) {
+        return item;
       }
     });
   };
+
   const { Search } = Input;
 
   //handle error
   if (error) {
     return <p className="center">{error.message}</p>;
   }
+
   // render component
   return (
     <div className="App">
@@ -196,6 +191,39 @@ const App = () => {
           <div className="flex-1 device">
             <img src={Deviceimage} alt="DeviceImage" />
           </div>
+        </section>
+        <section>
+          <div
+            className="mt-menu-holder-nav-link mt-clickable"
+            onClick={showDrawer}
+          >
+            <img src={Hamburger} alt="" />
+          </div>
+          <Drawer
+            placement="left"
+            closable={false}
+            onClose={onClose}
+            visible={visible}
+          >
+            <div className="mt-close-icon mt-clickable" onClick={onClose}>
+              <img src="img/close.png" alt="" />
+            </div>
+            <div className="filters">
+              <CategoryFilter
+                handleClick={categoryFilter}
+                active={filterParam}
+                loadRequest={() => openNotification("bottomLeft")}
+              />
+              <PriceFilter
+                filterPrice={handlePriceFilter}
+                active={filterParam}
+              />
+              <FilterStorage
+                handleStorageValue={handleFilterStorage}
+                active={storageValue}
+              />
+            </div>
+          </Drawer>
         </section>
         <section className="layout-container">
           <Layout>
@@ -237,27 +265,35 @@ const App = () => {
                       {/* wrap the returned data with search function. */}
                       {search(currentPageElements)?.map((item, index) => {
                         return (
-                          <ProductCard productDetails={item} key={index} />
+                          <ProductCard
+                            productDetails={item}
+                            key={index}
+                            currentStorage={storageValue}
+                            currentPrice={Math.round((maxPrice + minPrice) / 2)}
+                          />
                         );
                       })}
                     </div>
                   </div>
                 </Content>
               )}
-              <div className="pagination">
-                {/* render pagination */}
-                <Pagination
-                  total={totalElementsCount}
-                  showTotal={(total, range) => `${range[0]} of ${total} items`}
-                  defaultPageSize={3}
-                  defaultCurrent={1}
-                  pageSize={elementsPerPage}
-                  onChange={handlePageClick}
-                />
-              </div>
+              {isLoaded && (
+                <div className="pagination">
+                  {/* render pagination */}
+                  <Pagination
+                    total={totalElementsCount}
+                    showTotal={(total, range) =>
+                      `${range[0]} of ${total} items`
+                    }
+                    defaultPageSize={3}
+                    defaultCurrent={1}
+                    pageSize={elementsPerPage}
+                    onChange={handlePageClick}
+                  />
+                </div>
+              )}
             </Layout>
           </Layout>
-          );
         </section>
       </div>
     </div>

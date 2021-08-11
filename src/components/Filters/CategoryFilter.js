@@ -8,7 +8,7 @@ export const CategoryFilter = (props) => {
   const categories = [
     {
       id: "0",
-      name: "All",
+      name: "Apple,Samsung,Google,Huawei,LG,Motorola,OnePlus",
     },
     {
       id: "1",
@@ -39,13 +39,11 @@ export const CategoryFilter = (props) => {
         <div
           key={id}
           className={
-            active.toString() === name
-              ? "category-list + active"
-              : "category-list"
+            active == name ? "category-list + active" : "category-list"
           }
         >
           <div className="category-name" onClick={() => handleClick(name)}>
-            <h3>{name}</h3>
+            <h3>{id == 0 ? "ALL" : name}</h3>
           </div>
           <div onClick={() => loadRequest()}>
             <UploadOutlined />

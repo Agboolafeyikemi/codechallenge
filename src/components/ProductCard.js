@@ -2,7 +2,7 @@ import React from "react";
 import SampleImage from "../images/sampleImage.png";
 
 export const ProductCard = (props) => {
-  const { productDetails } = props;
+  const { productDetails, currentPrice, currentStorage } = props;
   const {
     productDetails: { _id, name, imgUrl, quantity },
   } = props;
@@ -21,12 +21,13 @@ export const ProductCard = (props) => {
       <div className="unlocked">
         {" "}
         <p>
-          Unlocked | {lowestAsk?.storageSize ? lowestAsk.storageSize : "32GB"}
+          Unlocked |{" "}
+          {lowestAsk?.storageSize ? lowestAsk.storageSize : currentStorage}
         </p>{" "}
       </div>
       <div className="unit-price">
         <p>Unit Price</p>
-        <h3>${lowestAsk?.price ? lowestAsk.price : 165}</h3>
+        <h3>${lowestAsk?.price ? lowestAsk.price : currentPrice}</h3>
       </div>
       <p className="quantity">{quantity ? quantity : 1500} Available</p>
       <div className="btn-con">

@@ -1,8 +1,7 @@
 import React from "react";
-import markIcon from "../../images/check-mark.svg";
 
 export const FilterStorage = (props) => {
-  const { handleStorageValue } = props;
+  const { handleStorageValue, active } = props;
 
   const storageSizes = [
     { id: 1, size: "32GB" },
@@ -11,17 +10,24 @@ export const FilterStorage = (props) => {
     { id: 4, size: "256GB" },
   ];
 
+ 
+
   return (
     <div className="checkbox-group">
       <h2>Storage</h2>
-      <div className="options">
+      <div className="options storageA">
         {storageSizes?.map(({ id, size }) => (
-          <label title={size} key={id}>
+          <label
+            title={size}
+            key={id}
+            className={size == active ? "activeS" : "hide"}
+          >
             <input
               type="radio"
               name="size"
               value={size}
               key={id}
+              checked={size == active}
               onChange={(e) => handleStorageValue(e.target.value)}
             />
             <img />

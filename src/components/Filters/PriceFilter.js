@@ -5,7 +5,7 @@ import { Slider, InputNumber } from "antd";
 export const PriceFilter = (props) => {
   const { filterPrice } = props;
   const [min, setMin] = useState(0);
-  const [max, setMax] = useState(5000);
+  const [max, setMax] = useState(2500);
 
   const onChange = (value) => {
     if (value[0] < value[1]) {
@@ -34,7 +34,7 @@ export const PriceFilter = (props) => {
         <h2>Price Filter</h2>
         <Slider
           min={0}
-          max={5000}
+          max={2500}
           onChange={onChange}
           range={true}
           defaultValue={[min, max]}
@@ -45,7 +45,7 @@ export const PriceFilter = (props) => {
           <InputNumber
             placeholder="Min: 0"
             min={0}
-            max={5000}
+            max={2500}
             value={min}
             onChange={onChangeMin}
           />
@@ -53,9 +53,9 @@ export const PriceFilter = (props) => {
         <div className="separator"> | </div>
         <div>
           <InputNumber
-            placeholder="Max: 5000"
+            placeholder="Max: 2500"
             min={0}
-            max={5000}
+            max={2500}
             value={max}
             onChange={onChangeMax}
           />

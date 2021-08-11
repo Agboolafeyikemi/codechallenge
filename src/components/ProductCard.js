@@ -31,7 +31,7 @@ export const ProductCard = (props) => {
       </div>
       <p className="quantity">{quantity ? quantity : 1500} Available</p>
       <div className="btn-con">
-        <button>BUY</button>
+        <button className="btn">BUY</button>
       </div>
     </div>
   );

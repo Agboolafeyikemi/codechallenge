@@ -134,16 +134,6 @@ const App = () => {
               item.lowestRequest[newItem]
                 ?.toString()
                 .toLowerCase()
-                .indexOf(q.toLowerCase()) > -1) ||
-            (item.lowestRequest &&
-              item.lowestRequest["age"]
-                ?.toString()
-                .toLowerCase()
-                .indexOf(q.toLowerCase()) > -1) ||
-            (item.lowestRequest &&
-              item.lowestRequest["storageSize"]
-                ?.toString()
-                .toLowerCase()
                 .indexOf(q.toLowerCase()) > -1)
           );
         });
@@ -169,6 +159,7 @@ const App = () => {
             <h1>SHOP OUR LATEST AVAILABLE STOCK HERE</h1>
             <div className="input-container">
               <Search
+                aria-label="Enter Search Term (e.g iPhone x, 128GB or A1)"
                 allowClear
                 enterButton="Search"
                 size="large"
@@ -184,6 +175,7 @@ const App = () => {
             <img src={Deviceimage} alt="DeviceImage" />
           </div>
         </section>
+        {/* show on mobile */}
         <section>
           <div
             className="mt-menu-holder-nav-link mt-clickable"

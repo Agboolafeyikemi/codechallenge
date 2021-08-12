@@ -299,12 +299,7 @@ div.options > label > img {
   margin-right: 10px;
   border: 1px solid black;
 }
-div.options > label > input:first-child {
-  background-image: url("./images/check-mark.svg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 19px 11px;
-}
+
 .activeS > input:checked + img {
   background-image: url("./images/check-mark.svg");
   background-repeat: no-repeat;

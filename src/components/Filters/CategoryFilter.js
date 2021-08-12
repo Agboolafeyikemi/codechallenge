@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { UploadOutlined } from "@ant-design/icons";
 
@@ -52,4 +53,9 @@ export const CategoryFilter = (props) => {
       ))}
     </div>
   );
+};
+CategoryFilter.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+  active: PropTypes.bool.isRequired,
+  loadRequest: PropTypes.func.isRequired,
 };

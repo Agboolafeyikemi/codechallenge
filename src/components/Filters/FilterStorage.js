@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 export const FilterStorage = (props) => {
   const { handleStorageValue, active } = props;
@@ -34,4 +35,8 @@ export const FilterStorage = (props) => {
       </div>
     </div>
   );
+};
+FilterStorage.propTypes = {
+  handleStorageValue: PropTypes.func.isRequired,
+  active: PropTypes.bool.isRequired,
 };

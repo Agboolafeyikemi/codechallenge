@@ -36,7 +36,7 @@ const App = () => {
   const [priceRange, setPriceRange] = useState([0, 2500]);
   const [offset, setOffset] = useState(0);
   const [currentPageElements, setCurrentPageElements] = useState([]);
-  const [elementsPerPage, setElementsPerPage] = useState(15);
+  const [elementsPerPage] = useState(15);
   const [pagesCount, setPagesCount] = useState(1);
   const [totalElementsCount, setTotalElementsCount] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
@@ -50,11 +50,8 @@ const App = () => {
   // fetch data
   useEffect(() => {
     fetch(
-      `https://ezeapi-prod-copy.herokuapp.com/api/v1/sell-request/in-stock?sort=new&limit=200&page=1&minPrice=${Math.min(
-        ...priceRange
-      )}&maxPrice=${Math.max(
-        ...priceRange
-      ).toString()}&storageSizeString=${storageValue}&conditionString=&category=Smartphones&brand=${filterParam}`
+      `https://ezeapi-prod-copy.herokuapp.com/api/v1/sell-request/in-stock?sort=new&limit=200&page=1&minPrice=${minPrice}&maxPrice=${maxPrice}
+      &storageSizeString=${storageValue}&conditionString=&category=Smartphones&brand=${filterParam}`
     )
       .then((res) => res.json())
       .then(
@@ -78,10 +75,6 @@ const App = () => {
     setCurrentPageElements(PageElements);
   }, [pagesCount, offset]);
 
-  // const getRandomArbitrary = (min, max) => {
-  //   console.log(`runing`);
-  //   return Math.random() * (max - min) + min;
-  // };
   const setPaginationStates = () => {
     setPagesCount(Math.ceil(totalElementsCount / elementsPerPage));
   };

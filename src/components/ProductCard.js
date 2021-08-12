@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import SampleImage from "../images/sampleImage.png";
 
 export const ProductCard = (props) => {
@@ -35,4 +37,10 @@ export const ProductCard = (props) => {
       </div>
     </div>
   );
+};
+
+ProductCard.propTypes = {
+  productDetails: PropTypes.object.isRequired,
+  currentPrice: PropTypes.string.isRequired,
+  currentStorage: PropTypes.string,
 };

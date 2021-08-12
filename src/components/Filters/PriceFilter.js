@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 import { Slider, InputNumber } from "antd";
 
@@ -63,4 +64,8 @@ export const PriceFilter = (props) => {
       </div>
     </>
   );
+};
+
+PriceFilter.propTypes = {
+  filterPrice: PropTypes.func.isRequired,
 };
